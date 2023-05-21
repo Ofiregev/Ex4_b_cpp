@@ -7,7 +7,7 @@ namespace ariel {
 
 
    void Team2::add(Character* warrior) {
-     cout << "add func team2" << endl;
+     //cout << "add func team2" << endl;
     if (warrior == nullptr) {
         return;
     }

@@ -28,8 +28,8 @@ Team::Team(Character* leader) : team_leader(nullptr) {
     //leader->setTeam(this);
     members.fill(nullptr);
     add(leader); // Add the team leader as the first member of the team
-    cout << "finishd constructor" << endl;
-    cout << "team1: " << this << endl;
+    // cout << "finishd constructor" << endl;
+    // cout << "team1: " << this << endl;
 }
 
 
@@ -127,7 +127,7 @@ Team::Team(Character* leader) : team_leader(nullptr) {
     }
     if (warrior->getTeam() != nullptr)
     {
-             cout << "team1: " << this << endl;
+            // cout << "team1: " << this << endl;
 
         throw std::runtime_error("Warrior is already in a team");
     }
@@ -206,36 +206,32 @@ Team::Team(Character* leader) : team_leader(nullptr) {
         return dynamic_cast<Ninja *>(warrior) != nullptr;
     }
 
-    Character *Team::findClosestVictim(Team *enemies)
+    Character* Team::findClosestVictim(Team* enemies)
+{
+    double minimal_dist = 100000;
+    Character* victim = nullptr;
+    for (size_t i = 0; i < MAX_MEMBERS; i++)
     {
-        cout << "closet victim function" << endl;
-        double minimal_dist = 100000;
-        Character *victim = nullptr;
-        for (size_t i = 0; i < MAX_MEMBERS; i++)
+        if (enemies->members[i] && enemies->members[i]->isAlive() && !enemies->members[i]->getAttackedParam())
         {
-            if (enemies->members[i] && enemies->members[i]->isAlive()&& (!enemies->members[i]->getAttackedParam()))
+            double dist = enemies->members[i]->distance(team_leader);
+            if (dist < minimal_dist)
             {
-                double dist = enemies->members[i]->distance(team_leader);
-
-                if (dist < minimal_dist)
-                {
-                    minimal_dist = dist;
-                    victim = enemies->members[i];
-                    cout << "victim is :" << endl;
-                    victim->print();
-                }
+                minimal_dist = dist;
+                victim = enemies->members[i];
+                 //cout << "victim is:" << victim->print() << endl;;
+         
             }
         }
-        cout << "chose victim :";
-        victim->print();
-        return victim;
     }
+    return victim;
+}
 
     void Team::killVictim(Team *enemies)
     {
         Character *victim = findClosestVictim(enemies);
-        cout << "victim before attack:";
-        victim->print();
+        // cout << "victim before attack:";
+        // victim->print();
         for (size_t i = 0; i < MAX_MEMBERS; i++)
         {
             if (members[i] && members[i]->isAlive())
@@ -255,6 +251,7 @@ Team::Team(Character* leader) : team_leader(nullptr) {
                 {
                     if (ninja->distance(victim) <= 1 && victim->isAlive())
                     {
+                        cout << ninja->print() << endl;
                         ninja->slash(victim);
                     }
                     else
@@ -268,10 +265,9 @@ Team::Team(Character* leader) : team_leader(nullptr) {
                 }
             }
         }
-        cout << "victim after attack:";
-        victim->print();
         
-        
+        // cout << "victim after attack:";
+        // victim->print();
         // if (!victim->isAlive())
         // {
         //     //cout << "victim dead, got attackes ?:";
@@ -344,9 +340,9 @@ Team::Team(Character* leader) : team_leader(nullptr) {
                 members[leader_index] = temp;
             }
             killVictim(enemies);
-            cout << "team status: " << endl;
-            enemies->print();
-            cout << "finished " << endl;
+            // cout << "team status: " << endl;
+            // enemies->print();
+            // cout << "finishd " << endl;
         }
         enemies->setAttackedParam();
     }
