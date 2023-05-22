@@ -16,7 +16,7 @@ namespace ariel
         Point location;
         int score;
         std::string name;
-        bool attacked = false;
+        //bool attacked = false;
         Team *team = nullptr; // if the character is a team leader
 
     public:
@@ -30,9 +30,9 @@ namespace ariel
         virtual Character *createCopy() const = 0;
         void setTeam(Team *newTeam);
         Team *getTeam() const ;
-        void gotAttacked();
-        bool getAttackedParam();
-        void setAttackedParam(bool attacked);
+        // void gotAttacked();
+        // bool getAttackedParam();
+        // void setAttackedParam(bool attacked);
         bool isAlive();
         double distance(Character *player);
         void hit(int points);

@@ -75,19 +75,19 @@ namespace ariel
         }
         return "Name: " + name + ", Score: " + std::to_string(score) + ", Location: "+ location.print() ;
     }
-    bool Character::getAttackedParam()
-    {
-        if(attacked == false)
-        {
-            return false;
-        }else{
-            return true;
-        }
-    }
-    void Character::setAttackedParam(bool attacked)
-    {
-        this->attacked = attacked;
-    }
+    // bool Character::getAttackedParam()
+    // {
+    //     if(attacked == false)
+    //     {
+    //         return false;
+    //     }else{
+    //         return true;
+    //     }
+    // }
+    // void Character::setAttackedParam(bool attacked)
+    // {
+    //     this->attacked = attacked;
+    // }
   
 
     int Character::getScore()
@@ -101,10 +101,10 @@ namespace ariel
     const std::type_info& Character::getType() const {
         return typeid(Character);
     }
-    void Character::gotAttacked()
-    {
-        attacked = true;
-    }
+    // void Character::gotAttacked()
+    // {
+    //     attacked = true;
+    // }
 
      Character::~Character() = default;
 
