@@ -4,30 +4,29 @@
 #include <string>
 #include "Character.hpp"
 using namespace std;
-     
-namespace ariel {
-    class Ninja : public Character {
-        private:
-            int speed;
-            
-        public:
-            Ninja(Point loc,int score,string name);
-            Character* createCopy() const override {
+
+namespace ariel
+{
+    class Ninja : public Character
+    {
+    private:
+        int speed;
+
+    public:
+        Ninja(Point loc, int score, string name);
+
+        // Override function to create a copy of the Cowboy object.
+        Character *createCopy() const override
+        {
             return new Ninja(*this);
         }
-            void setSpeed(int speed);
-            int getSpeed();
-            void move(Character* enemy);
-            void slash(Character* enemy);
-            string print() override;
-            const std::type_info& getType() const override;
-            //void destructor() override;
-
-
+        void setSpeed(int speed);
+        int getSpeed();
+        void move(Character *enemy);
+        void slash(Character *enemy);
+        string print() override;
+        const std::type_info &getType() const override;
     };
 }
-
-    
-
 
 #endif
