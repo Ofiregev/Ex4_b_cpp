@@ -4,13 +4,11 @@
 #include <iostream>
 #include <string>
 #include <array>
-//#include "Character.hpp"
-#include "Point.hpp"
-#include "Cowboy.hpp"
 #include "Ninja.hpp"
 #include "OldNinja.hpp"
 #include "YoungNinja.hpp"
 #include "TrainedNinja.hpp"
+#include "Cowboy.hpp"
 
 using namespace std;
 
@@ -37,8 +35,6 @@ namespace ariel {
         size_t findClosestLivingMemberIndex();
         Character* getTeamLeader();
         Character* findClosestLivingMember();
-        int didNotAttacked();
-        void setAttackedParam();
         Character* findClosestVictim(Team* enemies);
         void killVictim(Team* enemies);
         bool isCowboy(Character* warrior);
