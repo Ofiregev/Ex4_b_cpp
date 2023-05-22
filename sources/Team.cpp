@@ -6,26 +6,11 @@ namespace ariel
 {
 
     // Constructor
-//    Team::Team(Character* leader) : team_leader(leader) {
-//     if (leader == nullptr) {
-//         throw std::invalid_argument("Leader cannot be null");
-//     }
-//     if (leader->getTeam() != nullptr) {
-//         throw std::runtime_error("Leader is already in a team");
-//     }
-//     leader->setTeam(this);
-//     members.fill(nullptr);
-//     add(leader); // Add the team leader as the first member of the team
-// }
 Team::Team(Character* leader) : team_leader(nullptr) {
     if (leader == nullptr) {
         throw std::invalid_argument("Leader cannot be null");
     }
-    // if (leader->getTeam() != nullptr) {
-    //     throw std::runtime_error("Leader is already in a team");
-    // }
     team_leader = leader;
-    //leader->setTeam(this);
     members.fill(nullptr);
     add(leader); // Add the team leader as the first member of the team
     // cout << "finishd constructor" << endl;
@@ -146,6 +131,8 @@ Team::Team(Character* leader) : team_leader(nullptr) {
     {
         throw std::runtime_error("Team is full. Cannot add more characters.");
     }
+    //cout << "adding to team " << warrior->print() << endl;
+
     this->sortByType();
 }
 
@@ -205,173 +192,298 @@ Team::Team(Character* leader) : team_leader(nullptr) {
     {
         return dynamic_cast<Ninja *>(warrior) != nullptr;
     }
+// Character* Team::findClosestVictim(Team* enemies)
+// {
+//     double minimal_dist = std::numeric_limits<double>::infinity();
+//     Character* victim = nullptr;
+//     for (Character* enemy : enemies->members)
+//     {
+//         if (enemy && enemy->isAlive())
+//         {
+//             double dist = enemy->distance(team_leader);
+//             if (dist < minimal_dist)
+//             {
+//                 minimal_dist = dist;
+//                 victim = enemy;
+//             }
+//         }
+//     }
+//     return victim;
+// }
 
-    Character* Team::findClosestVictim(Team* enemies)
-{
-    double minimal_dist = 100000;
+
+// Character* Team::findClosestLivingMember()
+// {
+//     double minimal_dist = std::numeric_limits<double>::infinity();
+//     Character* closest_member = nullptr;
+
+//     for (Character* member : members)
+//     {
+//         if (member && member->isAlive())
+//         {
+//             double distance_to_leader = member->distance(team_leader);
+//             if (distance_to_leader < minimal_dist)
+//             {
+//                 minimal_dist = distance_to_leader;
+//                 closest_member = member;
+//             }
+//         }
+//     }
+
+//     return closest_member;
+// }
+//     void Team::killVictim(Team *enemies)
+// {
+//     Character *victim = findClosestVictim(enemies);
+//     cout << "victim before attack: " << victim->print() << endl;
+
+//     for (Character* attacker : members)
+//     {
+//         if (attacker && attacker->isAlive())
+//         {
+//             while (victim && !victim->isAlive())
+//             {
+//                 victim = findClosestVictim(enemies);
+//             }
+
+//             if (!victim)
+//             {
+//                 cout << "No living victim found!" << endl;
+//                 break;
+//             }
+//             cout << "the attacker is: " << attacker->print() << endl;
+//             if (Cowboy *cowboy = dynamic_cast<Cowboy *>(attacker))
+//             {
+//                 if (cowboy->hasboolets())
+//                 {
+//                     cowboy->shoot(victim);
+//                 }
+//                 else
+//                 {
+//                     cowboy->reload();
+//                 }
+//             }
+//             else if (Ninja *ninja = dynamic_cast<Ninja *>(attacker))
+//             {
+//                 if (ninja->distance(victim) <= 1 && victim->isAlive())
+//                 {
+//                     ninja->slash(victim);
+//                 }
+//                 else
+//                 {
+//                     ninja->move(victim);
+//                 }
+//             }
+//             else
+//             {
+//                 cout << "Member is neither Cowboy nor Ninja!" << endl;
+//             }
+//             cout << "victim after attack: " << victim->print() << endl;
+//         }
+//     }
+// }
+
+// void Team::attack(Team* enemies)
+// {
+//     if (!enemies)
+//     {
+//         throw std::invalid_argument("null ptr");
+//     }
+
+//     if (enemies->stillAlive() == 0 || stillAlive() == 0)
+//     {
+//         return;
+//     }
+
+//     if (!team_leader->isAlive())
+//     {
+//         // Find the index of the old team leader
+//         size_t leader_index = SIZE_MAX;
+//         for (size_t i = 0; i < MAX_MEMBERS; i++)
+//         {
+//             if (members[i] == team_leader)
+//             {
+//                 leader_index = i;
+//                 break;
+//             }
+//         }
+
+//         if (leader_index == SIZE_MAX)
+//         {
+//             // Error: old team leader not found in array
+//             throw std::runtime_error("Old team leader not found");
+//         }
+
+//         // Find the index of the closest living member to the old team leader
+//         Character* closest_member = findClosestLivingMember();
+//         size_t closest_index = SIZE_MAX;
+//         for (size_t i = 0; i < MAX_MEMBERS; i++)
+//         {
+//             if (members[i] == closest_member)
+//             {
+//                 closest_index = i;
+//                 break;
+//             }
+//         }
+
+//         if (closest_index == SIZE_MAX)
+//         {
+//             // Error: closest living member not found in array
+//             throw std::runtime_error("Closest living member not found");
+//         }
+
+//         // Set the new team leader pointer to be the closest living member pointer
+//         Character* temp = team_leader;
+//         team_leader = closest_member;
+//         team_leader->setTeam(this);
+//         members[leader_index] = temp;
+//     }
+
+//     killVictim(enemies);
+// }
+
+Character* Team::findClosestVictim(Team* enemies) {
+    double minimal_dist = std::numeric_limits<double>::infinity();
     Character* victim = nullptr;
-    for (size_t i = 0; i < MAX_MEMBERS; i++)
-    {
-        if (enemies->members[i] && enemies->members[i]->isAlive() && !enemies->members[i]->getAttackedParam())
-        {
-            double dist = enemies->members[i]->distance(team_leader);
-            if (dist < minimal_dist)
-            {
+    for (Character* enemy : enemies->members) {
+        if (enemy && enemy->isAlive()) {
+            double dist = enemy->distance(team_leader);
+            if (dist < minimal_dist) {
                 minimal_dist = dist;
-                victim = enemies->members[i];
-                 //cout << "victim is:" << victim->print() << endl;;
-         
+                victim = enemy;
             }
         }
     }
     return victim;
 }
 
+Character* Team::findClosestLivingMember() {
+    double minimal_dist = std::numeric_limits<double>::infinity();
+    Character* closest_member = nullptr;
+
+    for (Character* member : members) {
+        if (member && member->isAlive() && member!=team_leader) {
+            double distance_to_leader = member->distance(team_leader);
+            if (distance_to_leader < minimal_dist) {
+                minimal_dist = distance_to_leader;
+                closest_member = member;
+            }
+        }
+    }
+
+    return closest_member;
+}
+
     void Team::killVictim(Team *enemies)
+{
+    Character *victim = findClosestVictim(enemies);
+    
+    cout << "victim before attack: " << victim->print() << endl;
+
+    for (Character* attacker : members)
     {
-        Character *victim = findClosestVictim(enemies);
-        // cout << "victim before attack:";
-        // victim->print();
-        for (size_t i = 0; i < MAX_MEMBERS; i++)
+        if (attacker && attacker->isAlive())
         {
-            if (members[i] && members[i]->isAlive())
+            while (victim && !victim->isAlive())
             {
-                if (Cowboy *cowboy = dynamic_cast<Cowboy *>(members[i]))
+                victim = findClosestVictim(enemies);
+            }
+
+            if (!victim)
+            {
+                cout << "No living victim found!" << endl;
+                // throw std::runtime_error("No living victim found!");
+                break;
+            }
+            //cout << "the attacker is: " << attacker->print() << endl;
+            if (Cowboy *cowboy = dynamic_cast<Cowboy *>(attacker))
+            {
+                if (cowboy->hasboolets())
                 {
-                    if (cowboy->hasboolets())
-                    {
-                        cowboy->shoot(victim);
-                    }
-                    else
-                    {
-                        cowboy->reload();
-                    }
-                }
-                else if (Ninja *ninja = dynamic_cast<Ninja *>(members[i]))
-                {
-                    if (ninja->distance(victim) <= 1 && victim->isAlive())
-                    {
-                        cout << ninja->print() << endl;
-                        ninja->slash(victim);
-                    }
-                    else
-                    {
-                        ninja->move(victim);
-                    }
+                    cowboy->shoot(victim);
+                    cout << attacker->getName() << " shoot " << victim->getName() << " -10 points " << endl;
                 }
                 else
                 {
-                    cout << "Member is neither Cowboy nor Ninja!" << endl;
+                    cowboy->reload();
                 }
             }
-        }
-        
-        // cout << "victim after attack:";
-        // victim->print();
-        // if (!victim->isAlive())
-        // {
-        //     //cout << "victim dead, got attackes ?:";
-        //     victim->setAttackedParam(true);
-        //     //cout <<victim->getAttackedParam() << endl;
-        // }
-        // else
-        // {
-        //     //cout << "victim didnt dead, attacked ?:";
-        //     victim->setAttackedParam(true);
-        //     //cout << victim->getAttackedParam() << endl;
-        // }
-    }
-    void Team::attack(Team *enemies)
-    {
-        if(!enemies)
-        {
-            throw std::invalid_argument("null ptr");
-        }
-        if (enemies->stillAlive() == 0)
-        {
-            return;
-        }
-        //cout << "started the attack funtion: "<< endl;
-        // && enemies->didNotAttacked() > 0
-        // while (stillAlive() > 0 && enemies->stillAlive() > 0)
-        // {
-            if(stillAlive() > 0 && enemies->stillAlive() > 0 && enemies->didNotAttacked() > 0){
-            // cout << "didnt attacked enemies:";
-            // cout << enemies->didNotAttacked() << endl;
-            if (!team_leader->isAlive())
+            else if (Ninja *ninja = dynamic_cast<Ninja *>(attacker))
             {
-                // Find the index of the old team leader
-                size_t leader_index = 0;
-                for (size_t i = 0; i < MAX_MEMBERS; i++)
+                if (ninja->distance(victim) <= 1)
                 {
-                    if (members[i] == team_leader)
-                    {
-                        leader_index = i;
-                        break;
-                    }
+                    ninja->slash(victim);
+                    cout << attacker->getName() << " slashed " << victim->getName() << " -40 points " << endl;
                 }
-                if (leader_index == SIZE_MAX)
+                else
                 {
-                    // Error: old team leader not found in array
-                    throw("exception");
-                }
-                // Find the index of the closest living member to the old team leader
-                Character *closest_member = findClosestLivingMember();
-                size_t closest_index = 11;
-                for (size_t i = 0; i < MAX_MEMBERS; i++)
-                {
-                    if (members[i] == closest_member)
-                    {
-                        closest_index = i;
-                        break;
-                    }
-                }
-                if (closest_index == SIZE_MAX)
-                {
-                    // Error: closest living member not found in array
-                    throw("exception");
-                }
+                    //cout << "ninja location1: " << ninja->getLocation().print() << endl;
+                    ninja->move(victim);
+                    cout << attacker->getName() << " couldn't slash " << victim->getName() << " distance between them: " << std::to_string(ninja->distance(victim)) << endl;
+                    // cout << "victim is: " << victim->print() << endl;
 
-                // Set the new team leader pointer to be the closest living member pointer
-
-                Character *temp = team_leader;
-                team_leader = closest_member;
-                team_leader->setTeam(this);
-                members[leader_index] = temp;
+                    // cout << "ninja location2: " << ninja->getLocation().print() << endl;
+                }
             }
-            killVictim(enemies);
-            // cout << "team status: " << endl;
-            // enemies->print();
-            // cout << "finishd " << endl;
-        }
-        enemies->setAttackedParam();
-    }
-
-    Character *Team::findClosestLivingMember()
-    {
-        double minimal_dist = 100000;
-        Character *closest_member = nullptr;
-        bool found_living_member = false;
-        for (size_t i = 0; i < MAX_MEMBERS; i++)
-        {
-            if (members[i] && members[i]->isAlive())
+            else
             {
-                double distance_to_leader = members[i]->distance(team_leader);
-                if (distance_to_leader < minimal_dist)
-                {
-                    minimal_dist = distance_to_leader;
-                    closest_member = members[i];
-                }
-                found_living_member = true;
+                cout << "Member is neither Cowboy nor Ninja!" << endl;
             }
+            //cout << "victim after attack: " << victim->print() << endl;
         }
-        if (!found_living_member)
-        {
-            return nullptr;
-        }
-        return closest_member;
+    }
+}
+
+void Team::attack(Team* enemies) {
+    if (!enemies) {
+        throw std::invalid_argument("null ptr");
     }
 
+    if (enemies->stillAlive() == 0 || stillAlive() == 0) {
+            throw std::runtime_error("all members dead"); 
+    }
+    cout << "team " << team_leader->getName() << " attacking team " << enemies->team_leader->getName() << endl;
+    if (!team_leader->isAlive()) {
+        // Find the index of the old team leader
+        size_t leader_index = SIZE_MAX;
+        for (size_t i = 0; i < MAX_MEMBERS; i++) {
+            if (members[i] == team_leader) {
+                leader_index = i;
+                break;
+            }
+        }
+
+        if (leader_index == SIZE_MAX) {
+            // Error: old team leader not found in array
+            throw std::runtime_error("Old team leader not found");
+        }
+
+        // Find the index of the closest living member to the old team leader
+        Character* closest_member = findClosestLivingMember();
+        size_t closest_index = SIZE_MAX;
+        for (size_t i = 0; i < MAX_MEMBERS; i++) {
+            if (members[i] == closest_member) {
+                closest_index = i;
+                break;
+            }
+        }
+
+        if (closest_index == SIZE_MAX) {
+            // Error: closest living member not found in array
+            throw std::runtime_error("Closest living member not found");
+        }
+
+        // Set the new team leader pointer to be the closest living member pointer
+        Character* temp = team_leader;
+        team_leader = closest_member;
+        team_leader->setTeam(this);
+        members[leader_index] = temp;
+    }
+
+    killVictim(enemies);
+}
+
+    
     int Team::stillAlive()
     {
         
@@ -386,28 +498,28 @@ Team::Team(Character* leader) : team_leader(nullptr) {
         return count;
     }
 
-    int Team::didNotAttacked()
-    {
-        int count = 0;
-        for (size_t i = 0; i < 10; i++)
-        {
-            if (members[i] && members[i] ->isAlive()&& !(members[i]->getAttackedParam()))
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-    void Team::setAttackedParam()
-    {
-        for (size_t i = 0; i < 10; i++)
-        {
-            if (members[i])
-            {
-                members[i]->setAttackedParam(false);
-            }
-        }
-    }
+    // int Team::didNotAttacked()
+    // {
+    //     int count = 0;
+    //     for (size_t i = 0; i < 10; i++)
+    //     {
+    //         if (members[i] && members[i] ->isAlive())
+    //         {
+    //             count++;
+    //         }
+    //     }
+    //     return count;
+    // }
+    // void Team::setAttackedParam()
+    // {
+    //     for (size_t i = 0; i < 10; i++)
+    //     {
+    //         if (members[i])
+    //         {
+    //             members[i]->setAttackedParam(false);
+    //         }
+    //     }
+    // }
 
     void Team::print()
     {

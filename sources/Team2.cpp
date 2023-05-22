@@ -4,15 +4,14 @@ namespace ariel {
 
     Team2::Team2(Character* leader) : Team(leader) {
     }
-
+    
 
    void Team2::add(Character* warrior) {
-     //cout << "add func team2" << endl;
+     cout << "add func team2" << endl;
     if (warrior == nullptr) {
         return;
     }
     if (warrior->getTeam() != nullptr) {
-        cout << "team2: " << this << endl;
         throw std::runtime_error("Warrior is already in a team");
     }
     warrior->setTeam(this);
@@ -26,6 +25,7 @@ namespace ariel {
     } else {
         throw std::runtime_error("Team is full. Cannot add more characters.");
     }
+    cout << "adding to team2 " << warrior->print() << endl;
 }
 
    
