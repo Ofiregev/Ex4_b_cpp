@@ -12,33 +12,34 @@
 
 using namespace std;
 
-namespace ariel {
+namespace ariel
+{
     constexpr int MAX_MEMBERS = 10;
 
-    class Team {
+    class Team
+    {
     private:
-        std::array<Character*, MAX_MEMBERS> members;
-        Character* team_leader;
+        std::array<Character *, MAX_MEMBERS> members;
+        Character *team_leader;
 
     public:
-        Team(Character* leader);
-        Team(const Team& other);
-        Team& operator=(const Team& other);
-        Team(Team&& other) noexcept;
-        Team& operator=(Team&& other) noexcept;
+        Team(Character *leader);
+        Team(const Team &other);
+        Team &operator=(const Team &other);
+        Team(Team &&other) noexcept;
+        Team &operator=(Team &&other) noexcept;
         virtual ~Team();
 
-        virtual void add(Character* warrior);
-        std::array<Character*, MAX_MEMBERS>& getMembers();
+        virtual void add(Character *warrior);
+        std::array<Character *, MAX_MEMBERS> &getMembers();
         void sortByType();
-        void attack(Team* enemies);
-        size_t findClosestLivingMemberIndex();
-        Character* getTeamLeader();
-        Character* findClosestLivingMember();
-        Character* findClosestVictim(Team* enemies);
-        void killVictim(Team* enemies);
-        bool isCowboy(Character* warrior);
-        bool isNinja(Character* warrior);
+        void attack(Team *enemies);
+        Character *getTeamLeader();
+        Character *findClosestLivingMember();
+        Character *findClosestVictim(Team *enemies);
+        void killVictim(Team *enemies);
+        bool isCowboy(Character *warrior);
+        bool isNinja(Character *warrior);
         virtual int stillAlive();
         virtual void print();
     };
