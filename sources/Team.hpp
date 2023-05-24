@@ -32,12 +32,12 @@ namespace ariel
 
         virtual void add(Character *warrior);
         std::array<Character *, MAX_MEMBERS> &getMembers();
-        void sortByType();
-        void attack(Team *enemies);
+        virtual void sortByType();
+        virtual void attack(Team *enemies);
         Character *getTeamLeader();
         Character *findClosestLivingMember();
         Character *findClosestVictim(Team *enemies);
-        void killVictim(Team *enemies);
+        virtual void killVictim(Team *enemies);
         bool isCowboy(Character *warrior);
         bool isNinja(Character *warrior);
         virtual int stillAlive();
